@@ -12,7 +12,7 @@ async function enviarTracto(datos) {
 
         if (response.status === 200) {
             const patente = datos.patente;
-            console.log(`Tracto perteneciente a la patente: ${patente} enviado con éxito`);
+            console.log(`Tracto perteneciente a la patente: ${patente} enviado con éxito a Construmart`); 
         } else {
             console.log("Error al enviar los datos");
         }
