@@ -23,11 +23,11 @@ async function ejecutarCiclo() {
           .replace("T", " ");
 
         let datosUbicacion = {
-          latitud: tractoInfo.tracto.Lat,
-          longitud: tractoInfo.tracto.Lon,
-          altitud: tractoInfo.tracto.Alt,
-          velocidad: tractoInfo.tracto.Speed,
-          cog: tractoInfo.tracto.Direction,
+          latitud: parseFloat(tractoInfo.tracto.Lat),
+          longitud: parseFloat(tractoInfo.tracto.Lon),
+          altitud: parseFloat(tractoInfo.tracto.Alt),
+          velocidad: parseFloat(tractoInfo.tracto.Speed),
+          cog: parseFloat(tractoInfo.tracto.Direction),
           input: [0,0,0,0],
           adc: [0,0,0,0],
           patente: tractoInfo.patente,
