@@ -5,6 +5,7 @@ const tractoSchema = new Schema({
   imei: {
     type: String,
     required: [true, 'imei obligatorio'],
+    unique: true,
   },
   patente: {
     type: String,

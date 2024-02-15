@@ -11,7 +11,6 @@ export async function login(clientID, username, password) {
         };
 
         const url = process.env.BERMANN_URL + "/auth";
-
         const response = await axios.post(url, body, {
             headers: {
                 "Content-Type": "application/json"
