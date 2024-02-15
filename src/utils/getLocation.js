@@ -54,7 +54,7 @@ export async function getLocation(empresa) {
     
         listaTractos.push(newTracto);
       } catch (error) {
-        console.error(`Error al obtener datos del tracto con IMEI ${imei}: ${error.message}`);
+        // console.error(`Error al obtener datos del tracto con IMEI ${imei}: ${error.message}`);
         // Puedes manejar el error de manera específica o simplemente seguir con el siguiente tracto
       }
     }

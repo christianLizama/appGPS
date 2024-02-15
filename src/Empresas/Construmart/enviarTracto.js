@@ -1,18 +1,20 @@
 // EnviarDatos.js
 import axios from 'axios';
 
-async function enviarTracto(datos) {
+async function enviarTracto(lote) {
     try {
         const headers = {
             "Content-Type": "application/json",
         };
 
         const url = process.env.CONSTRUMART_URL;
-        const response = await axios.post(url, datos, { headers });
-
+        const response = await axios.post(url, lote, { headers });
+        console.log(response.data);
         if (response.status === 200) {
-            const patente = datos.patente;
-            console.log(`Tracto perteneciente a la patente: ${patente} enviado con éxito a Construmart`); 
+            lote.forEach(tracto => {
+                console.log(`Tracto perteneciente a la patente: ${tracto.patente} enviado con éxito a Construmart`);   
+            });
+            console.log("Tractos enviados con éxito a Construmart con fecha " + new Date().toLocaleString());
         } else {
             console.log("Error al enviar los datos");
         }

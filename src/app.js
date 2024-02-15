@@ -50,9 +50,9 @@ server.listen(port, () => {
   //console.log(`Visita ${appURL} para ver la aplicación.`);
 });
 
-Bermann.ejecutarCiclo().catch((error) => {
-  console.error("Error en el ciclo de Bermann:", error);
-});
+// Bermann.ejecutarCiclo().catch((error) => {
+//   console.error("Error en el ciclo de Bermann:", error);
+// });
 
 Construmart.ejecutarCiclo().catch((error)=>{
   console.error("Error en el ciclo de Construmart");
