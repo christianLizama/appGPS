@@ -13,7 +13,7 @@ async function enviarTracto(token, datos) {
 
         if (response.status === 200) {
             const patente = datos.patente;
-            console.log(`Tracto perteneciente a la patente: ${patente} enviado con éxito a Bermann`);
+            console.log(`Tracto perteneciente a la patente: ${patente} enviado con éxito a Bermann ${new Date().toLocaleString()}`);
         } else {
             console.log("Error al enviar los datos");
         }

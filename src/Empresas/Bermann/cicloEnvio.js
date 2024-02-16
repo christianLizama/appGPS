@@ -20,14 +20,17 @@ async function ejecutarCiclo() {
         return;
       }
     }
-    console.log("-------------Bermann-------------")
     // Envía datos cada minuto durante una hora (60 minutos)
     for (let i = 0; i < 60; i++) {
-      const empresa = await Empresa.findOne({ nombre: "Bermann" });
-      const data = await getLocation(empresa);
+      const empresa = await Empresa.findOne({ nombre: "Bermann" }).populate("tractos") ;
+
       //Enviamos los datos de cada tracto
-      for (const tractoInfo of data) {
-        let fechaUTC = tractoInfo.tracto.LocalActualDate;
+      for (const tractoInfo of empresa.tractos) {
+        const ubicacion = await getLocation(tractoInfo);
+        if (!ubicacion) {
+          continue;
+        }
+        let fechaUTC = ubicacion.tracto.LocalActualDate;
         let fecha = new Date(fechaUTC);
 
         const fechaFormateada = fecha
@@ -37,17 +40,16 @@ async function ejecutarCiclo() {
 
         let datosUbicacion = {
           fecha: fechaFormateada,
-          imei: tractoInfo.imei,
-          patente: tractoInfo.patente,
-          latitud: tractoInfo.tracto.Lat,
-          longitud: tractoInfo.tracto.Lon,
-          orientacion: gradosEnteros(tractoInfo.tracto.Direction),
-          velocidad: parseFloat(tractoInfo.tracto.Speed),
+          imei: ubicacion.imei,
+          patente: ubicacion.patente,
+          latitud: ubicacion.tracto.Lat,
+          longitud: ubicacion.tracto.Lon,
+          orientacion: gradosEnteros(ubicacion.tracto.Direction),
+          velocidad: parseFloat(ubicacion.tracto.Speed),
           id_cliente_externo: process.env.CLIENTID,
         };
-        await enviarTracto(tokenBermann, datosUbicacion);
+        enviarTracto(tokenBermann, datosUbicacion);
       }
-      console.log("-------------------------------------------------");
       await delay(60000); // Espera 1 minuto antes del próximo envío
     }
     // Luego de una hora, vuelve a iniciar sesión para obtener un nuevo token

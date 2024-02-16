@@ -3,45 +3,41 @@ import Empresa from "../../models/empresa.js"; // Importa tu modelo de empresa
 import enviarTracto from "./enviarTracto.js";
 
 async function ejecutarCiclo() {
-
   // Ciclo eterno
   while (true) {
-    
-    console.log("-------------Construmart-------------")
-    // Envía datos cada minuto durante una hora (60 minutos)
-    for (let i = 0; i < 60; i++) {
-      const empresa = await Empresa.findOne({ nombre: "Construmart" });
-      const data = await getLocation(empresa);
-      let tractosEnviar=[];
-      //Enviamos los datos de cada tracto
-      for (const tractoInfo of data) {
-        let fechaUTC = tractoInfo.tracto.LocalActualDate;
+
+    // Obtener la empresa con todos los tractos
+    const empresa = await Empresa.findOne({ nombre: "Construmart" }).populate(
+      "tractos"
+    );
+    // Iterar sobre cada tracto de la empresa
+    for (const tractoInfo of empresa.tractos) {
+      // Obtener datos de ubicación utilizando getLocation
+      const ubicacion = await getLocation(tractoInfo);
+      if (ubicacion) {
+        let fechaUTC = ubicacion.tracto.LocalActualDate;
         let fecha = new Date(fechaUTC);
 
-        // const fechaFormateada = fecha
-        //   .toISOString()
-        //   .slice(0, 19)
-        //   .replace("T", " ");
-
-        let datosUbicacion = {
-          fecha: fecha.getTime(),
-          latitud: parseFloat(tractoInfo.tracto.Lat),
-          longitud: parseFloat(tractoInfo.tracto.Lon),
-          altitud: parseFloat(tractoInfo.tracto.Alt),
-          velocidad: parseFloat(tractoInfo.tracto.Speed),
-          cog: parseFloat(tractoInfo.tracto.Direction),
-          input: [0,0,0,0],
-          adc: [0,0,0,0],
-          patente: tractoInfo.patente,
-        };
-        //console.log(datosUbicacion);
-        tractosEnviar.push(datosUbicacion);
+        // Construir objeto de datos de ubicación
+        const datosUbicacion = [
+          {
+            fecha: fecha.getTime(),
+            latitud: parseFloat(ubicacion.tracto.Lat),
+            longitud: parseFloat(ubicacion.tracto.Lon),
+            altitud: parseFloat(ubicacion.tracto.Alt),
+            velocidad: parseFloat(ubicacion.tracto.Speed),
+            cog: parseFloat(ubicacion.tracto.Direction),
+            input: [0, 0, 0, 0],
+            adc: [-200, -200, -200, -200],
+            patente: ubicacion.patente,
+          },
+        ];
+        enviarTracto(datosUbicacion);
       }
-      //console.log(JSON.parse(tractosEnviar));
-      await enviarTracto(tractosEnviar);
-      console.log("-------------------------------------------------");
-      await delay(60000); // Espera 1 minuto antes del próximo envío
     }
+    
+    // Esperar 1 minuto antes del próximo envío de datos
+    await delay(60000);
   }
 }
 
@@ -62,4 +58,4 @@ function delay(ms) {
   });
 }
 
-export default {ejecutarCiclo};
+export default { ejecutarCiclo };
