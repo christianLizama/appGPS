@@ -27,6 +27,8 @@ async function ejecutarCiclo() {
             altitud: parseFloat(ubicacion.tracto.Alt),
             velocidad: parseFloat(ubicacion.tracto.Speed),
             cog: parseFloat(ubicacion.tracto.Direction),
+            nsat: 0.0,
+            realtime: true,
             input: [0, 0, 0, 0],
             adc: [-200, -200, -200, -200],
             patente: ubicacion.patente,
