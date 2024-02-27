@@ -11,6 +11,12 @@ const tractoSchema = new Schema({
     type: String,
     required: [true, 'patente obligatoria'],
   },
+  idSimpli: {
+    type: String,
+  },
+  socioSimpli: {
+    type: String,
+  },
 });
 
 //convertir a modelo de mongoose

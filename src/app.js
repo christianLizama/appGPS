@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import http from "http"; // Importa 'http' para crear el servidor
 import Bermann from "./Empresas/Bermann/cicloEnvio.js";
 import Construmart from "./Empresas/Construmart/cicloEnvio.js"
+import SimpliRoute from "./Empresas/SimpliRoute/cicloEnvio.js";
+
 import { Server as SocketServer } from "socket.io"; // Importa 'Server' de 'socket.io'
 import db from "./database/index.js";
 import { eventEmitter, enviarDatosPeriodicamente } from "./utils/prueba.js";
@@ -59,6 +61,12 @@ Construmart.ejecutarCiclo().catch((error)=>{
   console.log(error);
   console.error("Error en el ciclo de Construmart");
 });
+
+SimpliRoute.ejecutarCiclo().catch((error)=>{
+  console.log(error);
+  console.error("Error en el ciclo de SimpliRoute");
+});
+
 
 
 
